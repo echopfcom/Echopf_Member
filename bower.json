@@ -1,0 +1,21 @@
+{
+  "name": "echopf-member-site",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Atsushi Nakatsugawa <atsushi@moongift.jp>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendors",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^4.0.0"
+  }
+}

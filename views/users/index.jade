@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  div.row.justify-content-md-center
+    div.col-md-auto
+      h2 会員登録してください
+      if error
+        div.alert.alert-warning
+          span= error.message
+          if error.details
+            ul
+              each val, key in error.details
+                li #{key} : #{val.message}
+      form(action="/users",method="post")
+        div.form-group
+          label(for=inputName) 名前
+          input.form-control(type="text",name="name",placeholder="名前")
+        div.form-group
+          label(for=inputLoginId) ログインID
+          input.form-control(type="text",name="login_id",placeholder="ログインID")
+        div.form-group
+          label(for=inputEmail) メールアドレス
+          input.form-control(type="email",name="email",placeholder="メールアドレス")
+        div.form-group
+          label(for=inputPassword) パスワード
+          input.form-control(type="password",name="password")
+        div.form-group
+          label(for=inputPasswordConfirmation) パスワード（確認入力）
+          input.form-control(type="password",name="password_confirmation")
+        button.btn.btn-primary(type="submit") 登録
