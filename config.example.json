@@ -1,5 +1,6 @@
 {
     "accountDomain": "YOUR.echopf.com",
     "applicationId": "YOUR_APPLICATION_ID",
-    "applicationKey": "YOUR_APPLICATION_KEY"
+    "applicationKey": "YOUR_APPLICATION_KEY",
+    "secret": "YOUR_SECRET"
 }
