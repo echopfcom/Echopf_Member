@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  div.row.justify-content-md-center
+    div.col-md-auto
+      h2 会員情報を更新してください
+      if error
+        div.alert.alert-warning
+          span= error.message
+          if error.details
+            ul
+              each val, key in error.details
+                li #{key} : #{val.message}
+      form(action="/users/me",method="post")
+        input(type="hidden",name="_method",value="put")
+        div.form-group
+          label(for=inputName) 名前
+          input.form-control(type="text",name="name",placeholder="名前",value=user.name)
+        div.form-group
+          label(for=inputEmail) メールアドレス
+          input.form-control(type="email",name="email",placeholder="メールアドレス",value=user.email)
+        button.btn.btn-primary(type="submit") 登録

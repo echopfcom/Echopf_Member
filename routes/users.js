@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ECHOPF = require('../ECHO.min');
 const config = require('../config');
+const jwt = require('jsonwebtoken');
 
 ECHOPF.initialize(
     config.accountDomain,
@@ -16,6 +17,62 @@ router.get('/', (req, res, next) => {
 
 router.get('/new', (req, res, next) => {
     res.render('users/new');
+});
+
+const getCurrentUser = (req) => {
+  try {
+    const token = req.cookies.token;
+    const user = jwt.verify(token, config.secret);
+    return user;
+  } catch(err) {
+    return false;
+  }
+}
+
+router.put('/me', (req, res, next) => {
+  const currentUser = getCurrentUser(req);
+  if (!currentUser) {
+  } else {
+    res.clearCookie('token');
+    return res.redirect('/');
+  }
+  ECHOPF.accessToken = currentUser.accessToken;
+  const member = new ECHOPF.Members
+    .MemberObject('member', currentUser.refId);
+  member
+    .fetch()
+    .then(user => {
+      user
+        .put('contents', {
+          name: req.body.name,
+          email: req.body.email
+        })
+      return user.push();
+    }, err => console.log(err))
+    .then(user => {
+      const json = {
+        accessToken: currentUser.accessToken,
+        refId: user.refid,
+        login_id: user.get('login_id'),
+        name: user.get('contents').name,
+        email: user.get('contents').email
+      }
+      var token = jwt.sign(json, config.secret, {
+        expiresIn: '1h'
+      });
+      res.cookie('token', token);
+      res.redirect('/users/edit');
+    }, err => console.log(err))
+});
+
+router.get('/edit', (req, res, next) => {
+  const user = getCurrentUser(req);
+  if (user) {
+    res.render('users/edit', {user});
+  } else {
+    res.clearCookie('token');
+    return res.redirect('/');
+  }
 });
 
 router.post('/', (req, res, next) => {

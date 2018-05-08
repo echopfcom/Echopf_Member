@@ -7,7 +7,7 @@ router.get('/', (req, res, next) => {
   const json = token
     ? JSON.parse(new Buffer(token.split('.')[1], 'base64').toString('ascii'))
     : {};
-  res.render('index', { title: 'Express', json: json });
+    res.render('index', { title: 'Express', json: json });
 });
 
 module.exports = router;
